@@ -5,6 +5,8 @@ var bodyParser = require('body-parser');
 var Trello = require('node-trello');
 var trello = new Trello(process.env.TRELLO_KEY, process.env.TRELLO_TOKEN);
 
+var slack_token = process.env.SLACK_TOKEN;
+
 var app = express();
 var port = process.env.PORT || 3000;
 
@@ -36,10 +38,12 @@ app.post('/*', function(req, res, next) {
   var command = req.body.command;
   var text = req.body.text;
   var user_name = req.body.user_name;
+  var token = req.body.token;
+
+  if (token !== slack_token) return next(new Error('Slack token and slack ENV token do not match'));
 
   postToTrello(listId, command, text, user_name, function(err, data) {
     if (err) throw err;
-    console.log(data);
 
     var name = data.name;
     var url = data.shortUrl;

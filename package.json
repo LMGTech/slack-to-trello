@@ -10,6 +10,10 @@
     "node-trello": "*"
   },
   "env": {
+  	"SLACK_TOKEN" : {
+      "description": "slack token",
+      "required": true
+  	},
   	"TRELLO_KEY" : {
       "description": "trello key",
       "required": true
